@@ -1,3 +1,6 @@
+from typing import Dict, List, Type
+
+
 class InfoMessage:
     """Информационное сообщение о тренировке."""
     def __init__(self,
@@ -129,14 +132,13 @@ class Swimming(Training):
         return spent_calories
 
 
-def read_package(workout_type: str, date: list[int]) -> Training:
+def read_package(workout_type: str, date: List[int]) -> Training:
     """Прочитать данные полученные от датчиков."""
-    # убрала аннтоцию для словаря,
-    # т.к. при отправке появляется ошибка object is not subscriptable
-    # до этого было так: training_classes: Dict[str, Type[Training]]
-    training_classes = {'SWM': Swimming,
-                        'RUN': Running,
-                        'WLK': SportsWalking}
+    training_classes: Dict[str, Type[Training]] = {
+        'SWM': Swimming,
+        'RUN': Running,
+        'WLK': SportsWalking
+    }
     return training_classes[workout_type](*date)
 
 
