@@ -1,3 +1,6 @@
+from typing import Dict, Type
+
+
 class InfoMessage:
     """Информационное сообщение о тренировке."""
     def __init__(self,
@@ -131,7 +134,7 @@ class Swimming(Training):
 
 def read_package(workout_type: str, date: list[int]) -> Training:
     """Прочитать данные полученные от датчиков."""
-    training_classes: dict[str, type[Training]] = {
+    training_classes: Dict[str, Type[Training]] = {
         'SWM': Swimming,
         'RUN': Running,
         'WLK': SportsWalking}
