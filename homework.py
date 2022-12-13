@@ -1,4 +1,4 @@
-from typing import Dict, List, Type
+from typing import Dict, List
 from dataclasses import dataclass
 
 
@@ -45,7 +45,7 @@ class Training:
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий."""
         raise NotImplementedError(
-            f'Метод не передопределен в классе {Type[self].__name__}')
+            f'Метод не передопределен в классе {type(self).__name__}')
 
     def show_training_info(self) -> InfoMessage:
         """Вернуть информационное сообщение о выполненной тренировке."""
@@ -87,11 +87,12 @@ class SportsWalking(Training):
         self.height: float = height
 
     def get_spent_calories(self) -> float:
-        return ((0.035 * self.weight
+        return ((self.CALORIES_WEIGHT_MULTIPLIER * self.weight
                 + ((self.get_mean_speed()
                     * self.KMH_IN_MSEC)**2
                     / (self.height / self. CM_IN_M))
-                * 0.029 * self.weight)
+                * self.CALORIES_SPEED_HEIGHT_MULTIPLIER
+                * self.weight)
                 * self.duration * self.MIN_IN_H)
 
 
@@ -123,7 +124,7 @@ class Swimming(Training):
 
 def read_package(workout_type: str, date: List[int]) -> Training:
     """Прочитать данные полученные от датчиков."""
-    training_classes: Dict[str, Type[Training]] = {
+    training_classes: Dict[str, type(Training)] = {
         'SWM': Swimming,
         'RUN': Running,
         'WLK': SportsWalking
@@ -147,5 +148,3 @@ if __name__ == '__main__':
     for workout_type, data in packages:
         training = read_package(workout_type, data)
         main(training)
-
-print([cls.__name__ for cls in Training.__subclasses__()])
